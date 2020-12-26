@@ -37,17 +37,21 @@ namespace PeopleProcessor
             IMapper iMapper = config.CreateMapper();
             var parentList = iMapper.Map<IList<PersonDto>, IList<Parent>>(persons);
 
+            List<Parent> selectedParents = new List<Parent>();
             foreach (Parent p in parentList) 
             {
                 if (_personValidator.Validate(p, persons, qualifiedNameList))
                 {
                     Console.WriteLine("{0} {1}", p.Id, p.Children.Count);
+                    selectedParents.Add(p);
                 }
             }
 
-            string temp = JsonConvert.SerializeObject(parentList, JsonConfiguration.JsonSettings);
-            Console.WriteLine(temp);
-            File.WriteAllText(outputFilePathName, temp);
+            string result = JsonConvert.SerializeObject(selectedParents, JsonConfiguration.JsonSettings);
+            //TODO remove from console
+            Console.WriteLine(result);
+            File.WriteAllText(outputFilePathName, result);
+            Console.WriteLine("File Output To: " + outputFilePathName);
 
 
 

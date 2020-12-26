@@ -22,7 +22,6 @@ namespace PeopleProcessor
                 })
                 .Build();
 
-            //host.Services.GetService(PeopleProcessorService);
             var service = ActivatorUtilities.CreateInstance<PeopleProcessorService>(host.Services);
             service.Run();
 

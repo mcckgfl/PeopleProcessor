@@ -1,12 +1,9 @@
 # PeopleProcessor
 Process list of csv, transform, export to json file
-## Introduction
-
-<h3 align="center">Read in static csv file and export json file</h3>
 
 ## Table of Contents
 - [Features](#features)
-- [Example](#example)
+- [Built With](#built with)
 - [Support](#support)
 
 ## Features
@@ -23,7 +20,7 @@ Process list of csv, transform, export to json file
 
 ## Example
 
-input structure
+Input structure
 
 `
 Id,FirstName,LastName,ParentId
@@ -31,7 +28,7 @@ Id,FirstName,LastName,ParentId
 2,Jane,Doe,1
 `
 
-output structure
+Output structure
 
 ```json
 [

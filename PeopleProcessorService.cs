@@ -45,16 +45,22 @@ namespace PeopleProcessor
             List<FamilyDto> selectedParents = GetSelectedFamilyDto(people, parentList, qualifiedNameList);
 
             string result = JsonConvert.SerializeObject(selectedParents, JsonConfiguration.JsonSettings);
-            //TODO remove from console
             Console.WriteLine(result);
+
+            ExportTextFile(result, outputFilePathName);
+
+        }
+
+        private static void ExportTextFile(string result, string outputFilePathName)
+        {
             File.WriteAllText(outputFilePathName, result);
             Console.WriteLine("File Output To: " + outputFilePathName);
-
         }
 
         private List<FamilyDto> GetSelectedFamilyDto(IList<Person> persons, IList<FamilyDto> parentList, IList<string> qualifiedNameList)
         {
             List<FamilyDto> selectedParents = new List<FamilyDto>();
+
             foreach (FamilyDto p in parentList)
             {
                 if (_personValidator.Validate(p, persons, qualifiedNameList))

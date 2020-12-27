@@ -1,13 +1,8 @@
 # PeopleProcessor
 Process list of csv, transform, export to json file
 
-## Table of Contents
-- [Features](#features)
-- [Built With](#builtwith)
-- [Getting Started](#gettingstarted)
-
 ## Features
-- __file converter:__ ability to read people.csv fike and export structured list of selected parents and children in json format
+- __file converter:__ ability to read people.csv and export structured list of selected parents and children in json format
 
 ### Built With
 
@@ -22,11 +17,11 @@ Process list of csv, transform, export to json file
 
 Input structure
 
-`
+```json
 Id,FirstName,LastName,ParentId
 1,John,Doe,-1
 2,Jane,Doe,1
-`
+```
 
 Output structure
 

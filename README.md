@@ -3,8 +3,8 @@ Process list of csv, transform, export to json file
 
 ## Table of Contents
 - [Features](#features)
-- [Built With](#built with)
-- [Support](#support)
+- [Built With](#builtwith)
+- [Getting Started](#gettingstarted)
 
 ## Features
 - __file converter:__ ability to read people.csv fike and export structured list of selected parents and children in json format

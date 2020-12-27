@@ -5,15 +5,15 @@ using System.Text;
 
 namespace PeopleProcessor.Models
 {
-    public class Parent
+    public class FamilyDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int ParentId { get; set; }
-        public IList<PersonDto> Children { get; set; }
+        public IList<Person> Children { get; set; }
   
-        public Parent(int personId, IList<PersonDto> people)
+        public FamilyDto(int personId, IList<Person> people)
         {
             Children = people.Where(p => p.ParentId == personId).ToList();
         }

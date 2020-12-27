@@ -9,9 +9,8 @@ using System.Text;
 
 namespace PeopleProcessor
 {
-    public class PeopleCsvReader : IPeopleCsvReader
+    public class PeopleCsvReader : ICsvReader
     {
-
         public IList<T> DeserilizeCSVFile<T>(string filePath)
         {
 

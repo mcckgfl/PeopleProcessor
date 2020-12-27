@@ -10,12 +10,12 @@ using System.IO;
 
 namespace PeopleProcessor
 {
-    public class PeopleProcessorService : IPeopleProcessorService
+    public class PeopleProcessorService
     {
-        private readonly IPeopleCsvReader _peopleCsvReader;
+        private readonly ICsvReader _peopleCsvReader;
         private readonly IPersonValidator _personValidator;
-        private readonly IList<string> qualifiedNameList = new List<string> { "Christina", "Dave", "Kris", "Jared", "Kait", "Paul" };
-        public PeopleProcessorService(IPeopleCsvReader peopleCsvReader, IPersonValidator personValidator)
+        
+        public PeopleProcessorService(ICsvReader peopleCsvReader, IPersonValidator personValidator)
         {
             _peopleCsvReader = peopleCsvReader;
             _personValidator = personValidator;
@@ -26,26 +26,23 @@ namespace PeopleProcessor
             var directoryName = Environment.CurrentDirectory + "\\Data\\";
             var inputFilePathName = directoryName + "people.csv";
             var outputFilePathName = directoryName + DateTime.Today.ToString("yyyy-MM-dd.") + "people.json";
+            IList<string> qualifiedNameList = new List<string> { "Christina", "Dave", "Kris", "Jared", "Kait", "Paul" };
 
-            var persons = _peopleCsvReader.DeserilizeCSVFile<PersonDto>(inputFilePathName);
+            var people = _peopleCsvReader.DeserilizeCSVFile<Person>(inputFilePathName);
 
-            var config = new MapperConfiguration(cfg => {
-                    cfg.CreateMap<PersonDto, Parent>()
-                    .ConstructUsing(x => new Parent(x.Id, persons));
+            //create config for automapper
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Person, FamilyDto>()
+                .ConstructUsing(x => new FamilyDto(x.Id, people));
             });
 
+            //map persons to families
             IMapper iMapper = config.CreateMapper();
-            var parentList = iMapper.Map<IList<PersonDto>, IList<Parent>>(persons);
+            var parentList = iMapper.Map<IList<Person>, IList<FamilyDto>>(people);
 
-            List<Parent> selectedParents = new List<Parent>();
-            foreach (Parent p in parentList) 
-            {
-                if (_personValidator.Validate(p, persons, qualifiedNameList))
-                {
-                    Console.WriteLine("{0} {1}", p.Id, p.Children.Count);
-                    selectedParents.Add(p);
-                }
-            }
+            //filter families using pre-determined list and logic
+            List<FamilyDto> selectedParents = GetSelectedFamilyDto(people, parentList, qualifiedNameList);
 
             string result = JsonConvert.SerializeObject(selectedParents, JsonConfiguration.JsonSettings);
             //TODO remove from console
@@ -53,10 +50,20 @@ namespace PeopleProcessor
             File.WriteAllText(outputFilePathName, result);
             Console.WriteLine("File Output To: " + outputFilePathName);
 
-
-
-
         }
 
+        private List<FamilyDto> GetSelectedFamilyDto(IList<Person> persons, IList<FamilyDto> parentList, IList<string> qualifiedNameList)
+        {
+            List<FamilyDto> selectedParents = new List<FamilyDto>();
+            foreach (FamilyDto p in parentList)
+            {
+                if (_personValidator.Validate(p, persons, qualifiedNameList))
+                {
+                    selectedParents.Add(p);
+                }
+            }
+
+            return selectedParents;
+        }
     }
 }

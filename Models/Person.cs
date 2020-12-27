@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PeopleProcessor.Models
 {
-    public class PersonDto
+    public class Person
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

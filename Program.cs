@@ -15,8 +15,8 @@ namespace PeopleProcessor
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddTransient<IPeopleProcessorService, PeopleProcessorService>();
-                    services.AddTransient<IPeopleCsvReader, PeopleCsvReader>();
+                    services.AddTransient<PeopleProcessorService>();
+                    services.AddTransient<ICsvReader, PeopleCsvReader>();
                     services.AddTransient<IPersonValidator, QualifiedPersonValidator>();
                     services.AddAutoMapper(typeof(Program).Assembly);
                 })

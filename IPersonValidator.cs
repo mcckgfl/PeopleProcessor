@@ -7,6 +7,6 @@ namespace PeopleProcessor
 {
     public interface IPersonValidator
     {
-        public bool Validate(Parent parent, IList<PersonDto> peopleList, IList<string> firstNames);
+        public bool Validate(FamilyDto parent, IList<Person> peopleList, IList<string> firstNames);
     }
 }

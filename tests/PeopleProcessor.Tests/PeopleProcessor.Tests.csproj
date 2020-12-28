@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\PeopleProcessor.csproj" />
+    <ProjectReference Include="..\..\src\PeopleProcessor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

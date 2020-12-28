@@ -6,37 +6,51 @@ namespace PeopleProcessor
 {
     public class QualifiedPersonValidator
     {
-
-        public bool Validate(RelationshipDto parent, IList<Person> peopleList, IList<string> criteria)
+        /// <summary>
+        /// specifies validity of output criteria
+        /// </summary>
+        /// <param name="person"></param>
+        /// <param name="peopleList"></param>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        protected bool Validate(RelationshipDto person, IList<Person> peopleList, IList<string> criteria)
         {
-            return FirstNameMatches(parent, criteria) && IsFirstInstanceOfThisPerson(parent, peopleList) ? true : false;
+            return FirstNameMatches(person, criteria) && IsFirstInstanceOfThisPerson(person, peopleList) ? true : false;
         }
 
-        private bool FirstNameMatches(RelationshipDto parent, IList<string> criteria)
+        private bool FirstNameMatches(RelationshipDto person, IList<string> criteria)
         {
-            return criteria.Contains(parent.FirstName) ? true : false;
+            return criteria.Contains(person.FirstName) ? true : false;
         }
 
-        private bool IsFirstInstanceOfThisPerson(RelationshipDto parent, IList<Person> peopleList)
+        private bool IsFirstInstanceOfThisPerson(RelationshipDto person, IList<Person> peopleList)
         {
             //peopleList.Where(p => p.IsQualifiedParent == true).GroupBy(x => x.FirstName, (key, g) => g.OrderBy(e => e.Id).First());
-            return peopleList.Where(p => p.FirstName == parent.FirstName).First().Id == parent.Id;
+            return peopleList.Where(p => p.FirstName == person.FirstName).First().Id == person.Id;
         }
 
-        /// <summary>This method returns a list of all relationships that qualify based first instance of each input name </summary>
-        public List<RelationshipDto> GetQualifiedPersonRelationshipDtos(IList<Person> persons, IList<RelationshipDto> relationshipList, IList<string> qualifiedParentNameList)
+        /// <summary>
+        /// Qualifies requsted first names
+        /// </summary>
+        /// <param name="peopleList"></param>
+        /// <param name="relationshipList"></param>
+        /// <param name="criteria"></param>
+        /// <returns>
+        /// Returns a list of all relationships that qualify based first instance of each input first name
+        /// </returns>
+        public List<RelationshipDto> GetQualifiedRelationshipDtos(IList<Person> peopleList, IList<RelationshipDto> relationshipList, IList<string> criteria)
         {
-            List<RelationshipDto> selectedParents = new List<RelationshipDto>();
+            List<RelationshipDto> selectedRelationships = new List<RelationshipDto>();
 
-            foreach (RelationshipDto p in relationshipList)
+            foreach (RelationshipDto relationship in relationshipList)
             {
-                if (Validate(p, persons, qualifiedParentNameList))
+                if (Validate(relationship, peopleList, criteria))
                 {
-                    selectedParents.Add(p);
+                    selectedRelationships.Add(relationship);
                 }
             }
 
-            return selectedParents;
+            return selectedRelationships;
         }
 
     }

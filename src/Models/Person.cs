@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PeopleProcessor.Models
+﻿namespace PeopleProcessor.Models
 {
     public class Person
     {
@@ -12,5 +8,4 @@ namespace PeopleProcessor.Models
         public int ParentId { get; set; }
 
     }
-
 }

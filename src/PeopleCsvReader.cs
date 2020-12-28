@@ -11,7 +11,7 @@ namespace PeopleProcessor
 {
     public class PeopleCsvReader : IFileReader
     {
-        public IList<T> DeserilizeCSVFile<T>(string filePath)
+        public IList<T> Convert<T>(string filePath)
         {
 
             IList<T> list = new List<T>();

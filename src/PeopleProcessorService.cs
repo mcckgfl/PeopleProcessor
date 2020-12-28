@@ -6,10 +6,12 @@ using AutoMapper;
 using System.Reflection;
 using Newtonsoft.Json;
 using PeopleProcessor.Common;
-using System.IO;
 
 namespace PeopleProcessor
 {
+    /// <summary>
+    /// Utility to process a list of people from csv flat file to relational model, apply filter, and dump results in json format
+    /// </summary>
     public class PeopleProcessorService
     {
         private readonly IFileReader _peopleCsvReader;
@@ -23,12 +25,13 @@ namespace PeopleProcessor
 
         public void Run()
         {
+            
             var directoryName = Environment.CurrentDirectory + "\\Data\\";
             var inputFilePathName = directoryName + "people.csv";
             var outputFilePathName = directoryName + DateTime.Today.ToString("yyyy-MM-dd") + "_people.json";
             IList<string> qualifiedNameList = new List<string> { "Christina", "Dave", "Kris", "Jared", "Kait", "Paul" };
 
-            var people = _peopleCsvReader.DeserilizeCSVFile<Person>(inputFilePathName);
+            var people = _peopleCsvReader.Convert<Person>(inputFilePathName);
 
             //create config for automapper
             var config = new MapperConfiguration(cfg =>
@@ -37,26 +40,19 @@ namespace PeopleProcessor
                 .ConstructUsing(x => new RelationshipDto(x.Id, people));
             });
 
-            //map persons to families
+            //map list of people to list of relationships... this will call constructor and populate children
             IMapper iMapper = config.CreateMapper();
             var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
 
             //get qualifying persons and relationships
-            List<RelationshipDto> selectedRelationships = _personValidator.GetQualifiedPersonRelationshipDtos(people, parentList, qualifiedNameList);
+            List<RelationshipDto> selectedRelationships = _personValidator.GetQualifiedRelationshipDtos(people, parentList, qualifiedNameList);
 
             string result = JsonConvert.SerializeObject(selectedRelationships, JsonConfiguration.JsonSettings);
             Console.WriteLine(result);
 
-            ExportTextFile(result, outputFilePathName);
+            FileOperations.ExportTextFile(result, outputFilePathName);
 
         }
-
-        private static void ExportTextFile(string result, string outputFilePathName)
-        {
-            File.WriteAllText(outputFilePathName, result);
-            Console.WriteLine("File Output To: " + outputFilePathName);
-        }
-
 
     }
 }

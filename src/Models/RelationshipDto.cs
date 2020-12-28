@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PeopleProcessor.Models
 {
@@ -13,8 +11,5 @@ namespace PeopleProcessor.Models
         {
             Children = people.Where(p => p.ParentId == personId).ToList();
         }
-
     }
-
-
 }

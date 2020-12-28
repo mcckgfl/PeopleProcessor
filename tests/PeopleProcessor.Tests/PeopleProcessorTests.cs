@@ -9,7 +9,7 @@ using System.Linq;
 using System.Globalization;
 using AutoMapper;
 
-namespace PeopleProcessor.CsvParserTests
+namespace PeopleProcessor.Tests
 {
 
     public class CsvReaderTest : IDisposable
@@ -46,7 +46,7 @@ namespace PeopleProcessor.CsvParserTests
         public void DeserilizedListValidation(int id, string fname, string lname, int parentId)
         {
             PeopleCsvReader pcr = new PeopleCsvReader();
-            var p = pcr.DeserilizeCSVFile<Person>(Environment.CurrentDirectory + "\\Data\\sample.csv");
+            var p = pcr.Convert<Person>(Environment.CurrentDirectory + "\\Data\\sample.csv");
 
             Assert.Equal(fname, p.ElementAt(id - 1).FirstName);
             Assert.Equal(lname, p.ElementAt(id - 1).LastName);
@@ -58,7 +58,7 @@ namespace PeopleProcessor.CsvParserTests
         public void DeserilizedListContainsData()
         {
             PeopleCsvReader pcr = new PeopleCsvReader();
-            var p = pcr.DeserilizeCSVFile<Person>(Environment.CurrentDirectory + "\\Data\\sample.csv");
+            var p = pcr.Convert<Person>(Environment.CurrentDirectory + "\\Data\\sample.csv");
 
             Assert.NotEmpty(p);
         }
@@ -132,16 +132,7 @@ namespace PeopleProcessor.CsvParserTests
             IMapper iMapper = config.CreateMapper();
             var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
 
-            //List<RelationshipDto> relationships = new List<RelationshipDto>() {
-            //    new RelationshipDto(1, people),
-           //     new RelationshipDto(2, people),
-           //     new RelationshipDto(4, people),
-           //     new RelationshipDto(8, people)
-           // };
             relationships = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
-
-            //Assert.Equal("David", relationships[0].FirstName);
-
         }
 
         [Fact]
@@ -149,7 +140,7 @@ namespace PeopleProcessor.CsvParserTests
         {
             IList<string> qualified = new List<string> { "David" };
             QualifiedPersonValidator qpv = new QualifiedPersonValidator();
-            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedRelationshipDtos(people, relationships, qualified);
             Assert.Single(selectedParents);
         }
 
@@ -158,7 +149,7 @@ namespace PeopleProcessor.CsvParserTests
         {
             IList<string> qualified = new List<string> { "John", "David"};
             QualifiedPersonValidator qpv = new QualifiedPersonValidator();
-            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedRelationshipDtos(people, relationships, qualified);
             Assert.Equal(2, selectedParents.Count);
         }
 
@@ -167,7 +158,7 @@ namespace PeopleProcessor.CsvParserTests
         {
             IList<string> qualified = new List<string>();
             QualifiedPersonValidator qpv = new QualifiedPersonValidator();
-            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedRelationshipDtos(people, relationships, qualified);
             Assert.Empty(selectedParents);
         }
 
@@ -176,7 +167,7 @@ namespace PeopleProcessor.CsvParserTests
         {
             IList<string> qualified = new List<string> { "John" };
             QualifiedPersonValidator qpv = new QualifiedPersonValidator();
-            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedRelationshipDtos(people, relationships, qualified);
             Assert.Equal("Jane", selectedParents[0].Children[0].FirstName="Jane");
         }
     }

@@ -4,6 +4,6 @@ namespace PeopleProcessor
 {
     public interface IFileReader
     {
-        IList<T> DeserilizeCSVFile<T>(string filePath);
+        IList<T> Convert<T>(string filePath);
     }
 }

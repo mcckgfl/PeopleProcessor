@@ -2,7 +2,7 @@
 
 namespace PeopleProcessor
 {
-    public interface ICsvReader
+    public interface IFileReader
     {
         IList<T> DeserilizeCSVFile<T>(string filePath);
     }

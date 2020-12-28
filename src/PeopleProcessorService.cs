@@ -12,10 +12,10 @@ namespace PeopleProcessor
 {
     public class PeopleProcessorService
     {
-        private readonly ICsvReader _peopleCsvReader;
-        private readonly IPersonValidator _personValidator;
+        private readonly IFileReader _peopleCsvReader;
+        private readonly QualifiedPersonValidator _personValidator;
         
-        public PeopleProcessorService(ICsvReader peopleCsvReader, IPersonValidator personValidator)
+        public PeopleProcessorService(IFileReader peopleCsvReader, QualifiedPersonValidator personValidator)
         {
             _peopleCsvReader = peopleCsvReader;
             _personValidator = personValidator;
@@ -33,18 +33,18 @@ namespace PeopleProcessor
             //create config for automapper
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Person, FamilyDto>()
-                .ConstructUsing(x => new FamilyDto(x.Id, people));
+                cfg.CreateMap<Person, RelationshipDto>()
+                .ConstructUsing(x => new RelationshipDto(x.Id, people));
             });
 
             //map persons to families
             IMapper iMapper = config.CreateMapper();
-            var parentList = iMapper.Map<IList<Person>, IList<FamilyDto>>(people);
+            var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
 
-            //filter families using pre-determined list and logic
-            List<FamilyDto> selectedParents = GetSelectedFamilyDto(people, parentList, qualifiedNameList);
+            //get qualifying persons and relationships
+            List<RelationshipDto> selectedRelationships = _personValidator.GetQualifiedPersonRelationshipDtos(people, parentList, qualifiedNameList);
 
-            string result = JsonConvert.SerializeObject(selectedParents, JsonConfiguration.JsonSettings);
+            string result = JsonConvert.SerializeObject(selectedRelationships, JsonConfiguration.JsonSettings);
             Console.WriteLine(result);
 
             ExportTextFile(result, outputFilePathName);
@@ -57,19 +57,6 @@ namespace PeopleProcessor
             Console.WriteLine("File Output To: " + outputFilePathName);
         }
 
-        private List<FamilyDto> GetSelectedFamilyDto(IList<Person> persons, IList<FamilyDto> parentList, IList<string> qualifiedNameList)
-        {
-            List<FamilyDto> selectedParents = new List<FamilyDto>();
 
-            foreach (FamilyDto p in parentList)
-            {
-                if (_personValidator.Validate(p, persons, qualifiedNameList))
-                {
-                    selectedParents.Add(p);
-                }
-            }
-
-            return selectedParents;
-        }
     }
 }

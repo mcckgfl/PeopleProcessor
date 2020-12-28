@@ -9,7 +9,7 @@ using System.Text;
 
 namespace PeopleProcessor
 {
-    public class PeopleCsvReader : ICsvReader
+    public class PeopleCsvReader : IFileReader
     {
         public IList<T> DeserilizeCSVFile<T>(string filePath)
         {

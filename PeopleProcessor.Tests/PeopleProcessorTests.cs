@@ -112,38 +112,72 @@ namespace PeopleProcessor.CsvParserTests
     public class QualifiedPersonValidatorTests
     {
 
-        [Fact]
-        public void OnlyReturnsOneRecordForSameFirstName()
-        {
-
-            IList<string> qualified = new List<string> { "David" };
-
-            List<Person> people = new List<Person>() {
+        private List<Person> people = new List<Person>() {
                 new Person() { Id = 1, FirstName = "John", LastName = "Doe", ParentId = -1 },
                 new Person() { Id = 2, FirstName = "Jane", LastName = "Doe", ParentId = 1 },
                 new Person() { Id = 4, FirstName = "David", LastName = "Ortiz", ParentId = -1 },
                 new Person() { Id = 8, FirstName = "David", LastName = "Ortiz", ParentId = -1 }
             };
 
-            List<RelationshipDto> relationships = new List<RelationshipDto>() {
-                new RelationshipDto(1, people),
-                new RelationshipDto(2, people),
-                new RelationshipDto(4, people),
-                new RelationshipDto(8, people)
-            };
+        private IList<RelationshipDto> relationships;
 
-            QualifiedPersonValidator qpv = new QualifiedPersonValidator();
+        public QualifiedPersonValidatorTests()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Person, RelationshipDto>()
+                .ConstructUsing(x => new RelationshipDto(x.Id, people));
+            });
 
-            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            IMapper iMapper = config.CreateMapper();
+            var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
 
-            Assert.Equal("David", relationships[0].FirstName);
-            Assert.Single(relationships);
+            //List<RelationshipDto> relationships = new List<RelationshipDto>() {
+            //    new RelationshipDto(1, people),
+           //     new RelationshipDto(2, people),
+           //     new RelationshipDto(4, people),
+           //     new RelationshipDto(8, people)
+           // };
+            relationships = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
+
+            //Assert.Equal("David", relationships[0].FirstName);
+
         }
 
         [Fact]
-        public void ChildrenAreAssigned()
+        public void OnlyReturnsOneRecordForSameFirstName()
         {
+            IList<string> qualified = new List<string> { "David" };
+            QualifiedPersonValidator qpv = new QualifiedPersonValidator();
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            Assert.Single(selectedParents);
+        }
 
+        [Fact]
+        public void ReturnTwoRecords()
+        {
+            IList<string> qualified = new List<string> { "John", "David"};
+            QualifiedPersonValidator qpv = new QualifiedPersonValidator();
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            Assert.Equal(2, selectedParents.Count);
+        }
+
+        [Fact]
+        public void ReturnZeroRecords()
+        {
+            IList<string> qualified = new List<string>();
+            QualifiedPersonValidator qpv = new QualifiedPersonValidator();
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            Assert.Empty(selectedParents);
+        }
+
+        [Fact]
+        public void ReturnsOneChildNamedJane()
+        {
+            IList<string> qualified = new List<string> { "John" };
+            QualifiedPersonValidator qpv = new QualifiedPersonValidator();
+            List<RelationshipDto> selectedParents = qpv.GetQualifiedPersonRelationshipDtos(people, relationships, qualified);
+            Assert.Equal("Jane", selectedParents[0].Children[0].FirstName="Jane");
         }
     }
 }

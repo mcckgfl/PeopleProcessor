@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PeopleProcessor.Models
 {
-    public class RelationshipDto : Person
+    public class RelationshipDto: Person
     {
 
         //public int Id { get; set; }

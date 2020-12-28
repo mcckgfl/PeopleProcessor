@@ -25,7 +25,7 @@ namespace PeopleProcessor
         {
             var directoryName = Environment.CurrentDirectory + "\\Data\\";
             var inputFilePathName = directoryName + "people.csv";
-            var outputFilePathName = directoryName + DateTime.Today.ToString("yyyy-MM-dd.") + "people.json";
+            var outputFilePathName = directoryName + DateTime.Today.ToString("yyyy-MM-dd") + "_people.json";
             IList<string> qualifiedNameList = new List<string> { "Christina", "Dave", "Kris", "Jared", "Kait", "Paul" };
 
             var people = _peopleCsvReader.DeserilizeCSVFile<Person>(inputFilePathName);

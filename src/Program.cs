@@ -17,7 +17,6 @@ namespace PeopleProcessor
                 {
                     services.AddTransient<PeopleProcessorService>();
                     services.AddTransient<IFileReader, PeopleCsvReader>();
-                    //services.AddTransient<IPersonValidator, QualifiedPersonValidator>();
                     services.AddTransient<QualifiedPersonValidator>();
                     services.AddAutoMapper(typeof(Program).Assembly);
                 })

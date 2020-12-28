@@ -7,12 +7,7 @@ namespace PeopleProcessor.Models
 {
     public class RelationshipDto: Person
     {
-
-        //public int Id { get; set; }
-        //public string FirstName { get; set; }
-        //public string LastName { get; set; }
-        //public int ParentId { get; set; }
-        public IList<Person> Children { get; set; }
+        public IList<Person> Children { get; }
 
         public RelationshipDto(int personId, IList<Person> people)
         {

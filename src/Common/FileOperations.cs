@@ -13,14 +13,5 @@ namespace PeopleProcessor.Common
             File.WriteAllText(outputFilePathName, result);
             Console.WriteLine("File Output To: " + outputFilePathName);
         }
-        public static bool InputFileExists(string filePathName)
-        {
-            if (!File.Exists(filePathName))
-            {
-                Console.WriteLine("Unable to locate file: " + filePathName);
-                return false;
-            }
-            return true;
-        }
     }
 }

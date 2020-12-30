@@ -1,4 +1,5 @@
 ﻿using PeopleProcessor.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,7 @@ namespace PeopleProcessor
         private bool IsFirstInstanceOfThisPerson(RelationshipDto person, IList<Person> peopleList)
         {
             //peopleList.Where(p => p.IsQualifiedParent == true).GroupBy(x => x.FirstName, (key, g) => g.OrderBy(e => e.Id).First());
-            return peopleList.Where(p => p.FirstName == person.FirstName).First().Id == person.Id;
+            return peopleList.Where(p => p.FirstName == person.FirstName).First().RowId == person.RowId;
         }
 
         /// <summary>

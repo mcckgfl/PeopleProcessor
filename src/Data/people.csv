@@ -13,3 +13,62 @@ Id,FirstName,LastName,ParentId
 12,Ron,Rivest,4
 13,Adi,Shamir ,8
 14,Leonard ,Adleman,-1
+1,Christina,Crawford,-1
+2,Kris,Tebbs,-1
+3,Jared,Macey,-1
+4,Dave,Mathias,-1
+5,Paul,Hester,-1
+6,Kait,Davidson,-1
+7,Bill,Gates,-1
+8,Steve,Jobs,-1
+9,Linus ,Torvalds,-1
+10,Paul,Hester,-1
+11,Leslie,Lamport,1
+12,Ron,Rivest,4
+13,Adi,Shamir ,8
+14,Leonard ,Adleman,-1
+1,Christina,Crawford,-1
+2,Kris,Tebbs,-1
+3,Jared,Macey,-1
+4,Dave,Mathias,-1
+5,Paul,Hester,-1
+6,Kait,Davidson,-1
+7,Bill,Gates,-1
+8,Steve,Jobs,-1
+9,Linus ,Torvalds,-1
+10,Paul,Hester,-1
+11,Leslie,Lamport,1
+12,Ron,Rivest,4
+13,Adi,Shamir ,8
+14,Leonard ,Adleman,-1
+1,Christina,Crawford,-1
+2,Kris,Tebbs,-1
+3,Jared,Macey,-1
+4,Dave,Mathias,-1
+5,Paul,Hester,-1
+6,Kait,Davidson,-1
+7,Bill,Gates,-1
+8,Steve,Jobs,-1
+9,Linus ,Torvalds,-1
+10,Paul,Hester,-1
+11,Leslie,Lamport,1
+12,Ron,Rivest,4
+13,Adi,Shamir ,8
+14,Leonard ,Adleman,-1
+1,Christina,Crawford,-1
+2,Kris,Tebbs,-1
+3,Jared,Macey,-1
+4,Dave,Mathias,-1
+5,Paul,Hester,-1
+6,Kait,Davidson,-1
+7,Bill,Gates,-1
+8,Steve,Jobs,-1
+9,Linus ,Torvalds,-1
+10,Paul,Hester,-1
+11,Leslie,Lamport,1
+12,Ron,Rivest,4
+13,Adi,Shamir ,8
+14,Leonard ,Adleman,-1
+15,Kait,Davidson,1
+15,Kait,Davidson,1
+17,Kait,Davidson,15

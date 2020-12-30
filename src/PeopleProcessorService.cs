@@ -16,12 +16,12 @@ namespace PeopleProcessor
     {
         private readonly IFileReader _peopleCsvReader;
         private readonly QualifiedPersonValidator _personValidator;
-        
+
         public PeopleProcessorService(IFileReader peopleCsvReader, QualifiedPersonValidator personValidator)
         {
             _peopleCsvReader = peopleCsvReader;
             _personValidator = personValidator;
-        }
+        } 
 
         public void Run()
         {
@@ -31,26 +31,34 @@ namespace PeopleProcessor
             var outputFilePathName = directoryName + DateTime.Today.ToString("yyyy-MM-dd") + "_people.json";
             IList<string> qualifiedNameList = new List<string> { "Christina", "Dave", "Kris", "Jared", "Kait", "Paul" };
 
-            var people = _peopleCsvReader.Convert<Person>(inputFilePathName);
+            //var people = _peopleCsvReader.Convert<Person>(inputFilePathName);
+            var people = CsvProcessor.ConvertTo<Person, PersonMap>(inputFilePathName);
 
-            //create config for automapper
-            var config = new MapperConfiguration(cfg =>
+            if (people.Count > 0)
             {
-                cfg.CreateMap<Person, RelationshipDto>()
-                .ConstructUsing(x => new RelationshipDto(x.Id, people));
-            });
+                //create config for automapper
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Person, RelationshipDto>()
+                    .ConstructUsing(x => new RelationshipDto(x.Id, people));
+                });
 
-            //map list of people to list of relationships... this will call constructor and populate children
-            IMapper iMapper = config.CreateMapper();
-            var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
+                //map list of people to list of relationships... this will call constructor and populate children
+                IMapper iMapper = config.CreateMapper();
+                var parentList = iMapper.Map<IList<Person>, IList<RelationshipDto>>(people);
 
-            //get qualifying persons and relationships
-            List<RelationshipDto> selectedRelationships = _personValidator.GetQualifiedRelationshipDtos(people, parentList, qualifiedNameList);
+                //get qualifying persons and relationships
+                List<RelationshipDto> selectedRelationships = _personValidator.GetQualifiedRelationshipDtos(people, parentList, qualifiedNameList);
 
-            string result = JsonConvert.SerializeObject(selectedRelationships, JsonConfiguration.JsonSettings);
-            Console.WriteLine(result);
+                string result = JsonConvert.SerializeObject(selectedRelationships, JsonConfiguration.JsonSettings);
+                Console.WriteLine(result);
 
-            FileOperations.ExportTextFile(result, outputFilePathName);
+                FileOperations.ExportTextFile(result, outputFilePathName);
+            }
+            else 
+            {
+                Console.WriteLine("No output file was created.");
+            }
 
         }
 

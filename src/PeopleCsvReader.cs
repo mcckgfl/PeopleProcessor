@@ -10,6 +10,7 @@ using System.Text;
 
 namespace PeopleProcessor
 {
+    [Obsolete]
     public class PeopleCsvReader : IFileReader
     {
 

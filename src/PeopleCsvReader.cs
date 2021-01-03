@@ -40,6 +40,12 @@ namespace PeopleProcessor
 
     public static class CsvProcessor
     {
+
+        //extension method for mapping headers, as well as ability to validate optional params implemented here 
+        // (optionals not currently used in this project but are for future consideration)
+        //https://stackoverflow.com/questions/59177675/generic-types-in-registerclassmap-with-parameters
+        //https://github.com/JoshClose/CsvHelper/issues/1260
+
         public static List<T> ConvertTo<T, TMap>(string file) where T : class
                     where TMap : ClassMap<T>
         {
@@ -73,7 +79,7 @@ namespace PeopleProcessor
         }
     }
 
-        public class PersonMap : ClassMap<Person>
+    public class PersonMap : ClassMap<Person>
         {
             public PersonMap()
             {
@@ -82,7 +88,7 @@ namespace PeopleProcessor
                 Map(m => m.FirstName);
                 Map(m => m.LastName);
                 Map(m => m.RowId).ConvertUsing(row => row.Context.RawRow);
-        }
+            }
         }
 
 
